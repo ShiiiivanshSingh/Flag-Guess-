@@ -72,32 +72,32 @@
  
   #menu {
     position: absolute;
-    top: 5rem;  /* Adjust the dropdown to appear below the button */
-    right: 3rem; /* Align the dropdown with the button */
+    top: 5rem;
+    right: 3rem; 
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-    opacity: 0; /* Initially hidden */
-    transform: translateY(-10px); /* Position the menu slightly above its final position */
+    opacity: 0; 
+    transform: translateY(-10px); 
   } 
   
-  /* When the menu is visible */
+  
   #menu.show {
     opacity: 1;
-    transform: translateY(0); /* Menu slides down */
+    transform: translateY(0); 
   }
   
-  /* Mobile responsiveness */
+  /*  responsiveness */
   @media (max-width: 768px) {
     #menu-btn {
-      top: 1.5rem; /* Adjust top positioning on smaller screens */
-      right: 1rem; /* Adjust right positioning on smaller screens */
+      top: 1.5rem; 
+      right: 1rem; 
     }
   
     #menu {
-      right: 1rem; /* Align the dropdown menu with the button */
+      right: 1rem; 
     }
   }
   

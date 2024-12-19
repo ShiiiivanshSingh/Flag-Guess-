@@ -2,7 +2,6 @@
 
 <p align="center"><img src="https://socialify.git.ci/ShiiiivanshSingh/Flag-Guess-/image?description=1&amp;language=1&amp;name=1&amp;owner=1&amp;pattern=Brick+Wall&amp;theme=Dark" alt="project-image"></p>
 
-<p id="description">A Flag Guessing Game!</p>
 
 <h2> 🚀 Demo</h2>
 
@@ -10,7 +9,7 @@
 
 <h2>☁️ Project Screenshots:</h2>
 
-<img src="https://pbs.twimg.com/media/GfK13JAXkAAWdp-?format=jpg&amp;name=4096x4096" alt="project-screenshot" width="1280" height="720/">
+![pro](https://github.com/user-attachments/assets/79bf9491-a31e-48a3-b45e-cb1cff4a976f)
 
   
   

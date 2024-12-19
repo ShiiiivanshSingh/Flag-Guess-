@@ -33,5 +33,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## By Shivansh Pratap Singh
  (You can always check out my socials at : https://linktr.ee/ShivanshPratapSingh)
 
-(a procastination project!)
+(a procastination project!) <br>
 Made On 19.12.24 <3

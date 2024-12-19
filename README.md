@@ -1,4 +1,4 @@
-<h1 align="center" id="title">Flag Guessor</h1>
+<h1 align="center" id="title">Flag Guessing Adventure 🌍</h1>
 
 <p align="center"><img src="https://socialify.git.ci/ShiiiivanshSingh/Flag-Guess-/image?description=1&amp;language=1&amp;name=1&amp;owner=1&amp;pattern=Brick+Wall&amp;theme=Dark" alt="project-image"></p>
 
@@ -33,4 +33,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## By Shivansh Pratap Singh
  (You can always check out my socials at : https://linktr.ee/ShivanshPratapSingh)
 
-Made On 10.09.24 <3
+(a procastination project!)
+Made On 19.12.24 <3

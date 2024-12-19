@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flag Guessing Adventure</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%234CAF50' /%3E%3Ctext x='50%' y='50%' font-size='48' text-anchor='middle' fill='white'%3E🌍%3C/text%3E%3C/svg%3E" />
+  
+
+</head>
+  <body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
+    <div id="home-btn-fixed" class="fixed top-4 left-4 z-10">
+      <button id="home-btn-fixed-element" class="home-btn">Home</button>
+    </div>
+<!-- Menu Button -->
+<button id="menu-btn" class="fixed top-4 right-20 z-10 bg-blue-500 text-white p-2 rounded-md shadow-md hover:bg-blue-600 focus:outline-none">Menu</button>
+
+<!-- Menu Dropdown -->
+<div id="menu" class="hidden absolute top-12 right-20 bg-white text-black border border-gray-300 rounded-md shadow-lg w-40 opacity-0 transition-opacity duration-300 ease-in-out">
+  <a href="about.html" id="about-link" class="block px-4 py-2 hover:bg-gray-200">About</a>
+  <a href="https://github.com/ShiiiivanshSingh/Flag-Guess-" target="_blank" id="repo-link" class="block px-4 py-2 hover:bg-gray-200">Repo</a>
+</div>
+
+
+    <div id="landing-page" class="w-96 bg-white rounded-xl shadow-2xl p-8 text-center">
+      <h1 class="text-3xl font-bold mb-6 text-gray-800">🌍 Guess The Flag</h1>
+      <div class="mb-6">
+        <label for="player-name" class="block text-gray-700 mb-2">Enter Your Name</label>
+        <input type="text" id="player-name" placeholder="What's your name, explorer?" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+      <button id="start-game-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 mb-4">Start Your Adventure</button>
+    </div>
+
+    <div id="difficulty-screen" class="hidden mb-6 text-center">
+      <div class="difficulty-options">
+        <p class="difficulty-label">Choose Difficulty:</p>
+        <div class="difficulty-container">
+          <button id="easy-btn" class="difficulty-btn easy">Easy</button>
+          <button id="medium-btn" class="difficulty-btn medium">Medium</button>
+          <button id="hard-btn" class="difficulty-btn hard">Hard</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-container" class="hidden w-full max-w-md bg-white rounded-xl shadow-2xl p-6 text-center">
+      <h2 id="player-greeting" class="text-2xl font-bold mb-4">Welcome, Player!</h2>
+      <div class="flex justify-between mb-4">
+        <p class="text-sm">Lives: <span id="lives">❤️ ❤️ ❤️</span></p>
+        <p class="text-sm">Score: <span id="score-value">0</span></p>
+      </div>
+      <p id="difficulty-label" class="text-lg font-semibold mb-2">Difficulty: Easy</p>
+      <div class="mb-4 h-6"><p id="hint" class="text-sm text-gray-600"></p></div>
+      <div class="mb-6">
+        <img id="flag-image" src="" alt="Country Flag" class="w-64 h-40 mx-auto object-cover border-2 rounded-lg" />
+      </div>
+      <div class="relative">
+        <input type="text" id="guess" placeholder="Enter country name" class="w-full p-3 border rounded-lg mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <div id="suggestions" class="absolute z-10 w-full max-h-40 overflow-y-auto bg-white border rounded-lg shadow-lg"></div>
+      </div>
+      <button id="submit-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300">Submit Guess</button>
+      <button id="skip-flag-btn" class="w-full bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 transition duration-300 mt-4">Skip Flag (Cost 1 Life)</button>
+      <p id="result" class="mt-4 text-lg font-semibold"></p>
+    </div>
+
+    <div id="game-over-screen" class="hidden w-full max-w-md bg-white rounded-xl shadow-2xl p-8 text-center">
+      <h1 class="text-3xl font-bold mb-6 text-gray-800">Game Over!</h1>
+      <p>Your final score: <span id="final-score"></span></p>
+      <button id="restart-btn" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300 mt-4">Restart Game</button>
+      
+      <p class="text-sm text-gray-500 mt-6">Made by Shivansh :)</p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

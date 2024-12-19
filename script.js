@@ -33,8 +33,7 @@ class FlagGuessingGame {
     this.difficulty = "easy";
     this.playerName = "";
     this.roundNumber = 1;
-    this.shownFlags = [];  // Track flags that have been shown
-
+    this.shownFlags = [];  
     this.elements = {
       landingPage: document.getElementById("landing-page"),
       gameContainer: document.getElementById("game-container"),
@@ -143,10 +142,10 @@ class FlagGuessingGame {
   getRandomFlag() {
     const availableFlags = this.countries.filter(country => !this.shownFlags.includes(country));
     
-    // If all flags have been shown, reset the shownFlags array
+    
     if (availableFlags.length === 0) {
       this.shownFlags = [];
-      return this.getRandomFlag(); // Recursively get a flag
+      return this.getRandomFlag(); 
     }
 
     const randomIndex = Math.floor(Math.random() * availableFlags.length);
@@ -192,11 +191,11 @@ class FlagGuessingGame {
 
       if (this.lives <= 0) {
         this.endGame();
-        return; // Stop further execution if the game is over
+        return; 
       }
     }
 
-    // Skip to the next flag after each guess (correct or incorrect)
+    // Skip 
     this.roundNumber++;
     this.startRound();
   }
@@ -227,7 +226,7 @@ class FlagGuessingGame {
     this.score = 0;
     this.lives = 3;
     this.roundNumber = 1;
-    this.shownFlags = []; // Reset shown flags on game reset
+    this.shownFlags = []; // Reset.
     this.updateScoreAndLives();
     this.elements.gameOverScreen.classList.add("hidden");
     this.elements.landingPage.classList.remove("hidden");
@@ -238,19 +237,18 @@ class FlagGuessingGame {
       country.name.common.toLowerCase().includes(query.toLowerCase())
     );
 
-    // Clear previous suggestions
+    // Clear 
     this.elements.suggestionsContainer.innerHTML = "";
 
-    // Add new suggestions
+    // Add 
     suggestions.forEach(country => {
       const suggestionElement = document.createElement("div");
       suggestionElement.textContent = country.name.common;
       suggestionElement.classList.add("suggestion-item");
 
-      // When suggestion is clicked, set it as the guess input
       suggestionElement.addEventListener("click", () => {
         this.elements.guessInput.value = country.name.common;
-        this.elements.suggestionsContainer.innerHTML = ""; // Clear suggestions after selection
+        this.elements.suggestionsContainer.innerHTML = ""; // Clear suggestions 
       });
 
       this.elements.suggestionsContainer.appendChild(suggestionElement);

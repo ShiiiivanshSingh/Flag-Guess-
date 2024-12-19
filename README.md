@@ -1,2 +1,1 @@
-# Flag-Guess-
-A Flag Guessing Game!
+# soon!

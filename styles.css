@@ -75,7 +75,7 @@
   }
   
   #home-btn-fixed-element:before {
-    content: "🏠";
+    content: "";
     font-size: 16px;
   }
   

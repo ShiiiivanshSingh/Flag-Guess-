@@ -177,27 +177,67 @@ class FlagGuessingGame {
     return country.region || "an unknown continent";
   }
 
-  checkAnswer() {
+  async checkAnswer() {
+    // Show loading spinner
+    document.getElementById('loading-spinner').classList.remove('hidden');
+    
     const guess = this.elements.guessInput.value.trim().toLowerCase();
     const correctAnswer = this.currentFlag.name.common.toLowerCase();
 
     if (guess === correctAnswer) {
+      // Add score animation
+      this.elements.scoreElement.classList.add('score-animation');
+      setTimeout(() => {
+        this.elements.scoreElement.classList.remove('score-animation');
+      }, 500);
+
       this.score += DIFFICULTY_LEVELS[this.difficulty].pointMultiplier;
       this.updateScoreAndLives();
+      
+      // Add success message with country info
+      this.showSuccessMessage();
     } else {
       this.lives -= 1;
       this.updateScoreAndLives();
-      this.elements.resultElement.textContent = `Incorrect! The correct answer was ${this.currentFlag.name.common}.`;
-
-      if (this.lives <= 0) {
-        this.endGame();
-        return; 
-      }
+      this.showErrorMessage();
     }
 
-    // Skip 
-    this.roundNumber++;
-    this.startRound();
+    // Hide loading spinner
+    document.getElementById('loading-spinner').classList.add('hidden');
+
+    if (this.lives <= 0) {
+      this.endGame();
+      return;
+    }
+
+    setTimeout(() => {
+      this.startRound();
+    }, 1500);
+  }
+
+  showSuccessMessage() {
+    const country = this.currentFlag;
+    const message = `
+      <div class="bg-green-100 p-4 rounded-lg mb-4">
+        <p class="text-green-800">Correct! 🎉</p>
+        <p class="text-sm mt-2">Population: ${this.formatNumber(country.population)}</p>
+        <p class="text-sm">Region: ${country.region}</p>
+      </div>
+    `;
+    this.elements.resultElement.innerHTML = message;
+  }
+
+  showErrorMessage() {
+    const message = `
+      <div class="bg-red-100 p-4 rounded-lg mb-4">
+        <p class="text-red-800">Incorrect! The correct answer was ${this.currentFlag.name.common}</p>
+      </div>
+    `;
+    this.elements.resultElement.innerHTML = message;
+  }
+
+  formatNumber(num) {
+    return new Intl.NumberFormat().format(num);
   }
 
   skipFlag() {
@@ -217,9 +257,23 @@ class FlagGuessingGame {
   }
 
   endGame() {
-    this.elements.gameContainer.classList.add("hidden");
-    this.elements.gameOverScreen.classList.remove("hidden");
-    this.elements.finalScore.textContent = `Final Score: ${this.score}`;
+    this.elements.gameContainer.classList.add('hidden');
+    this.elements.gameOverScreen.classList.remove('hidden');
+    
+    // Show high score if it's a new record
+    const highScore = localStorage.getItem('highScore') || 0;
+    if (this.score > highScore) {
+      localStorage.setItem('highScore', this.score);
+      this.elements.finalScore.innerHTML = `
+        <div class="text-2xl">
+          🎉 New High Score! 🎉
+          <br>
+          ${this.score} points
+        </div>
+      `;
+    } else {
+      this.elements.finalScore.textContent = `Final Score: ${this.score}`;
+    }
   }
 
   resetGame() {

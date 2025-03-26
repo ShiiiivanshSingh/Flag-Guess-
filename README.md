@@ -4,12 +4,28 @@
   <h1>Flag Guessing Adventure 🌍</h1>
   <p>A fun and interactive geography game that tests your knowledge of world flags through an engaging gameplay experience.</p>
   
-  <a href="https://shiiiivanshsingh.github.io/Flag-Guess-/game.html"><img src="https://img.shields.io/badge/Flag-Guessing-Adventure-0066FF?style=for-the-badge&logo=github&logoColor=white" alt="Flag Guessing Adventure"></a>
+  <a href="https://shiiiivanshsingh.github.io/Flag-Guess-/game.html"><img src="https://img.shields.io/badge/Flag_Guessing_Adventure-0066FF?style=for-the-badge&logo=github&logoColor=white" alt="Flag Guessing Adventure"></a>
 
   <p align="center"><img src="https://socialify.git.ci/ShiiiivanshSingh/Flag-Guess-/image?description=1&amp;language=1&amp;name=1&amp;owner=1&amp;pattern=Brick+Wall&amp;theme=Dark" alt="project-image"></p>
 </div>
 
 Welcome to Flag Guessing Adventure! A modern geography game that challenges players to identify countries from their flags. With an intuitive interface, lives system, and engaging gameplay mechanics, it's perfect for geography enthusiasts and anyone looking to expand their world knowledge in a fun way!
+
+
+
+## 🌟 Screenshots
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/79bf9491-a31e-48a3-b45e-cb1cff4a976f" alt="Game Screenshot">
+</div>
+
+<div align="center">
+  <a href="https://shiiiivanshsingh.github.io/Flag-Guess-/game.html"><img src="https://img.shields.io/badge/🌍%20Play%20Flag%20Guessing%20Adventure%20Now-4285F4?style=for-the-badge" alt="Play Flag Guessing Adventure Now"></a>
+</div>
+
+
+
+
 
 ## ✨ Key Features
 
@@ -88,15 +104,7 @@ Contributions are welcome! Here's how you can help:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🌟 Screenshots
 
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/79bf9491-a31e-48a3-b45e-cb1cff4a976f" alt="Game Screenshot">
-</div>
-
-<div align="center">
-  <a href="https://shiiiivanshsingh.github.io/Flag-Guess-/game.html"><img src="https://img.shields.io/badge/🌍%20Play%20Flag%20Guessing%20Adventure%20Now-4285F4?style=for-the-badge" alt="Play Flag Guessing Adventure Now"></a>
-</div>
 
 <div align="center">
 <br>

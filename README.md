@@ -12,7 +12,6 @@
 Welcome to Flag Guessing Adventure! A modern geography game that challenges players to identify countries from their flags. With an intuitive interface, lives system, and engaging gameplay mechanics, it's perfect for geography enthusiasts and anyone looking to expand their world knowledge in a fun way!
 
 
-
 ## 🌟 Screenshots
 
 <div align="center">

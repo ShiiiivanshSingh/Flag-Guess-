@@ -1,4 +1,4 @@
-const API_URL = "https://restcountries.com/v3.1/all";
+const API_URL = "https://restcountries.com/v3.1/all?fields=name,flags,capital,region,population";
 const DIFFICULTY_LEVELS = {
   easy: { pointMultiplier: 1, minLetters: 2 },
   medium: { pointMultiplier: 2, minLetters: 3 },
@@ -66,9 +66,27 @@ class FlagGuessingGame {
   }
 
   async init() {
-    const res = await fetch(API_URL);
-    this.countries = await res.json();
-    this.addEventListeners();
+    try {
+      const res = await fetch(API_URL);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      this.countries = await res.json();
+      
+      if (!Array.isArray(this.countries)) {
+        console.error('API did not return an array:', this.countries);
+        this.countries = [];
+      }
+      
+      console.log(`Loaded ${this.countries.length} countries`);
+      this.addEventListeners();
+    } catch (error) {
+      console.error('Failed to load countries:', error);
+      this.countries = this.getFallbackCountries();
+      this.addEventListeners();
+    }
   }
 
   addEventListeners() {
@@ -129,6 +147,13 @@ class FlagGuessingGame {
 
   startRound() {
     this.currentFlag = this.getRandomFlag();
+    
+    if (!this.currentFlag) {
+      console.error('Failed to get a random flag');
+      this.elements.resultElement.textContent = "Error: Unable to load countries. Please refresh the page.";
+      return;
+    }
+    
     this.elements.flagImage.src = this.currentFlag.flags.png;
     this.elements.resultElement.textContent = "";
     this.elements.guessInput.value = "";
@@ -140,6 +165,11 @@ class FlagGuessingGame {
 
   
   getRandomFlag() {
+    if (!Array.isArray(this.countries) || this.countries.length === 0) {
+      console.error('No countries available');
+      return null;
+    }
+    
     const availableFlags = this.countries.filter(country => !this.shownFlags.includes(country));
     
     
@@ -178,14 +208,12 @@ class FlagGuessingGame {
   }
 
   async checkAnswer() {
-    // Show loading spinner
     document.getElementById('loading-spinner').classList.remove('hidden');
     
     const guess = this.elements.guessInput.value.trim().toLowerCase();
     const correctAnswer = this.currentFlag.name.common.toLowerCase();
 
     if (guess === correctAnswer) {
-      // Add score animation
       this.elements.scoreElement.classList.add('score-animation');
       setTimeout(() => {
         this.elements.scoreElement.classList.remove('score-animation');
@@ -194,7 +222,6 @@ class FlagGuessingGame {
       this.score += DIFFICULTY_LEVELS[this.difficulty].pointMultiplier;
       this.updateScoreAndLives();
       
-      // Add success message with country info
       this.showSuccessMessage();
     } else {
       this.lives -= 1;
@@ -202,7 +229,6 @@ class FlagGuessingGame {
       this.showErrorMessage();
     }
 
-    // Hide loading spinner
     document.getElementById('loading-spinner').classList.add('hidden');
 
     if (this.lives <= 0) {
@@ -260,7 +286,6 @@ class FlagGuessingGame {
     this.elements.gameContainer.classList.add('hidden');
     this.elements.gameOverScreen.classList.remove('hidden');
     
-    // Show high score if it's a new record
     const highScore = localStorage.getItem('highScore') || 0;
     if (this.score > highScore) {
       localStorage.setItem('highScore', this.score);
@@ -280,21 +305,23 @@ class FlagGuessingGame {
     this.score = 0;
     this.lives = 3;
     this.roundNumber = 1;
-    this.shownFlags = []; // Reset.
+    this.shownFlags = [];
     this.updateScoreAndLives();
     this.elements.gameOverScreen.classList.add("hidden");
     this.elements.landingPage.classList.remove("hidden");
   }
 
   filterSuggestions(query) {
+    if (!Array.isArray(this.countries)) {
+      return;
+    }
+    
     const suggestions = this.countries.filter((country) =>
       country.name.common.toLowerCase().includes(query.toLowerCase())
     );
 
-    // Clear 
     this.elements.suggestionsContainer.innerHTML = "";
 
-    // Add 
     suggestions.forEach(country => {
       const suggestionElement = document.createElement("div");
       suggestionElement.textContent = country.name.common;
@@ -302,11 +329,86 @@ class FlagGuessingGame {
 
       suggestionElement.addEventListener("click", () => {
         this.elements.guessInput.value = country.name.common;
-        this.elements.suggestionsContainer.innerHTML = ""; // Clear suggestions 
+        this.elements.suggestionsContainer.innerHTML = "";
       });
 
       this.elements.suggestionsContainer.appendChild(suggestionElement);
     });
+  }
+
+  getFallbackCountries() {
+    return [
+      {
+        name: { common: "United States" },
+        flags: { png: "https://flagcdn.com/w320/us.png" },
+        capital: ["Washington, D.C."],
+        region: "Americas",
+        population: 329484123
+      },
+      {
+        name: { common: "United Kingdom" },
+        flags: { png: "https://flagcdn.com/w320/gb.png" },
+        capital: ["London"],
+        region: "Europe",
+        population: 67215293
+      },
+      {
+        name: { common: "France" },
+        flags: { png: "https://flagcdn.com/w320/fr.png" },
+        capital: ["Paris"],
+        region: "Europe",
+        population: 67391582
+      },
+      {
+        name: { common: "Germany" },
+        flags: { png: "https://flagcdn.com/w320/de.png" },
+        capital: ["Berlin"],
+        region: "Europe",
+        population: 83240525
+      },
+      {
+        name: { common: "Japan" },
+        flags: { png: "https://flagcdn.com/w320/jp.png" },
+        capital: ["Tokyo"],
+        region: "Asia",
+        population: 125836021
+      },
+      {
+        name: { common: "Canada" },
+        flags: { png: "https://flagcdn.com/w320/ca.png" },
+        capital: ["Ottawa"],
+        region: "Americas",
+        population: 38005238
+      },
+      {
+        name: { common: "Australia" },
+        flags: { png: "https://flagcdn.com/w320/au.png" },
+        capital: ["Canberra"],
+        region: "Oceania",
+        population: 25499884
+      },
+      {
+        name: { common: "Brazil" },
+        flags: { png: "https://flagcdn.com/w320/br.png" },
+        capital: ["Brasília"],
+        region: "Americas",
+        population: 212559417
+      },
+      {
+        name: { common: "India" },
+        flags: { png: "https://flagcdn.com/w320/in.png" },
+        capital: ["New Delhi"],
+        region: "Asia",
+        population: 1380004385
+      },
+      {
+        name: { common: "China" },
+        flags: { png: "https://flagcdn.com/w320/cn.png" },
+        capital: ["Beijing"],
+        region: "Asia",
+        population: 1439323776
+      }
+    ];
   }
 }
 

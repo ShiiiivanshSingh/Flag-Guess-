@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flagle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --text: #f0f0f0;
+      --muted: #666;
+      --accent: #e8ff47;
+      --red: #ff4747;
+      --green: #47ff8a;
+      --radius: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    /* ── SCREENS ── */
+    .screen { display: none; width: 100%; max-width: 440px; }
+    .screen.active { display: block; animation: rise 0.35s ease; }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── LANDING ── */
+    #landing { text-align: center; }
+
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+    .logo span { color: var(--accent); }
+
+    .tagline {
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 0.75rem;
+    }
+    input[type="text"]:focus { border-color: var(--accent); }
+    input[type="text"]::placeholder { color: var(--muted); }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius);
+      border: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      margin-top: 0.5rem;
+    }
+    .btn-ghost:hover { border-color: var(--muted); }
+
+    /* ── DIFFICULTY ── */
+    #difficulty { text-align: center; }
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .diff-grid { display: grid; gap: 0.5rem; }
+    .diff-btn {
+      width: 100%;
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .diff-btn:hover { border-color: var(--accent); background: #1d1d1d; }
+    .diff-btn .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+    .diff-btn.easy:hover .tag  { color: var(--green); }
+    .diff-btn.medium:hover .tag { color: var(--accent); }
+    .diff-btn.hard:hover .tag  { color: var(--red); }
+
+    /* ── GAME ── */
+    #game { position: relative; }
+
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .hud-item { display: flex; flex-direction: column; }
+    .hud-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .hud-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-top: 0.1rem;
+      transition: color 0.3s;
+    }
+    #score-display { color: var(--accent); }
+
+    .lives-dots { display: flex; gap: 5px; margin-top: 4px; }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dot.lost { background: var(--border); transform: scale(0.8); }
+
+    .flag-wrap {
+      width: 100%;
+      aspect-ratio: 3/2;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    #flag-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hint-bar {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      min-height: 1.2em;
+      letter-spacing: 0.3px;
+    }
+
+    .input-wrap { position: relative; margin-bottom: 0.5rem; }
+    #guess-input { margin-bottom: 0; }
+
+    #suggestions {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 20;
+      display: none;
+    }
+    #suggestions::-webkit-scrollbar { width: 4px; }
+    #suggestions::-webkit-scrollbar-track { background: transparent; }
+    #suggestions::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .suggestion {
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+    }
+    .suggestion:hover { background: #222; color: var(--accent); }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    #skip-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 0 1rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      width: auto;
+      text-transform: uppercase;
+    }
+    #skip-btn:hover { color: var(--red); border-color: var(--red); }
+
+    .feedback {
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: none;
+      animation: rise 0.2s ease;
+    }
+    .feedback.correct { background: rgba(71,255,138,0.1); color: var(--green); border: 1px solid rgba(71,255,138,0.2); }
+    .feedback.wrong   { background: rgba(255,71,71,0.1);   color: var(--red);   border: 1px solid rgba(255,71,71,0.2); }
+
+    .score-pop {
+      animation: pop 0.4s ease;
+    }
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.4); color: var(--accent); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── GAME OVER ── */
+    #gameover { text-align: center; }
+    .go-score {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -3px;
+      color: var(--accent);
+      margin: 1rem 0 0.25rem;
+    }
+    .go-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .go-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .go-stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+    }
+    .go-stat-val { font-size: 1.4rem; font-weight: 700; }
+    .go-stat-key {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .new-record {
+      background: rgba(232,255,71,0.08);
+      border: 1px solid rgba(232,255,71,0.3);
+      color: var(--accent);
+      border-radius: var(--radius);
+      padding: 0.6rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+
+
+    /* ── HOME BUTTON ── */
+    #home-btn {
+      position: fixed;
+      top: 1rem; left: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 0.5rem 0.75rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      z-index: 50;
+    }
+    #home-btn:hover { border-color: var(--accent); }
+
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+
+<button id="home-btn">← HOME</button>
+
+<!-- LANDING -->
+<div id="landing" class="screen active">
+  <div class="logo">Flag<span>le</span></div>
+  <p class="tagline">World Flag Challenge</p>
+  <input type="text" id="player-name" placeholder="Your name" maxlength="24" />
+  <button class="btn btn-primary" id="start-btn">Start Playing</button>
+</div>
+
+<!-- DIFFICULTY -->
+<div id="difficulty" class="screen">
+  <p class="section-title">Pick your difficulty</p>
+  <div class="diff-grid">
+    <button class="diff-btn easy" data-diff="easy">
+      Easy <span class="tag">1× POINTS · CAPITAL HINT</span>
+    </button>
+    <button class="diff-btn medium" data-diff="medium">
+      Medium <span class="tag">2× POINTS · REGION HINT</span>
+    </button>
+    <button class="diff-btn hard" data-diff="hard">
+      Hard <span class="tag">3× POINTS · BOTH HINTS</span>
+    </button>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="game" class="screen">
+  <div class="hud">
+    <div class="hud-item">
+      <span class="hud-label">Score</span>
+      <span class="hud-value" id="score-display">0</span>
+    </div>
+    <div class="hud-item" style="align-items:center">
+      <span class="hud-label" style="text-align:center">Lives</span>
+      <div class="lives-dots">
+        <div class="dot" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+      </div>
+    </div>
+    <div class="hud-item" style="align-items:flex-end">
+      <span class="hud-label">Round</span>
+      <span class="hud-value" id="round-display">1</span>
+    </div>
+  </div>
+
+  <div class="flag-wrap">
+    <img id="flag-image" src="" alt="Guess this flag" />
+  </div>
+
+  <p class="hint-bar" id="hint-text"></p>
+
+  <div class="input-wrap">
+    <input type="text" id="guess-input" placeholder="Country name…" autocomplete="off" />
+    <div id="suggestions"></div>
+  </div>
+
+  <div class="action-row">
+    <button class="btn btn-primary" id="submit-btn">Guess</button>
+    <button id="skip-btn">SKIP −1♥</button>
+  </div>
+
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameover" class="screen">
+  <p style="font-size:0.75rem;font-family:'DM Mono',monospace;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Game Over</p>
+  <div class="go-score" id="go-score">0</div>
+  <p class="go-label">Final Score</p>
+  <div class="new-record" id="new-record">🏆 New Personal Best!</div>
+  <div class="go-meta">
+    <div class="go-stat">
+      <div class="go-stat-val" id="go-correct">—</div>
+      <div class="go-stat-key">Correct</div>
+    </div>
+    <div class="go-stat">
+      <div class="go-stat-val" id="go-rounds">—</div>
+      <div class="go-stat-key">Rounds</div>
+    </div>
+    <div class="go-stat">
+      <div class="go-stat-val" id="go-diff">—</div>
+      <div class="go-stat-key">Difficulty</div>
+    </div>
+    <div class="go-stat">
+      <div class="go-stat-val" id="go-best">—</div>
+      <div class="go-stat-key">Best Score</div>
+    </div>
+  </div>
+  <button class="btn btn-primary" id="restart-btn">Play Again</button>
+  <button class="btn btn-ghost" id="change-diff-btn">Change Difficulty</button>
+</div>
+
+<script>
+const MULT = { easy: 1, medium: 2, hard: 3 };
+
+const $ = id => document.getElementById(id);
+const screens = { landing: $('landing'), difficulty: $('difficulty'), game: $('game'), gameover: $('gameover') };
+
+function show(name) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
+}
+
+// ── State ──
+let countries = [], shown = [], score = 0, lives = 3, round = 1, correct = 0;
+let current = null, difficulty = 'easy', playerName = '';
+
+// ── Built-in country dataset (no API needed) ──
+// Flag images use flagcdn.com which serves via standard CDN
+function buildCountries() {
+  const data = [
+    ["Afghanistan","af","Kabul","Asia",41128771],
+    ["Albania","al","Tirana","Europe",2877797],
+    ["Algeria","dz","Algiers","Africa",44700000],
+    ["Argentina","ar","Buenos Aires","Americas",45195774],
+    ["Armenia","am","Yerevan","Asia",2963243],
+    ["Australia","au","Canberra","Oceania",25499884],
+    ["Austria","at","Vienna","Europe",9006398],
+    ["Azerbaijan","az","Baku","Asia",10139177],
+    ["Bangladesh","bd","Dhaka","Asia",166303498],
+    ["Belgium","be","Brussels","Europe",11555997],
+    ["Bolivia","bo","Sucre","Americas",11673021],
+    ["Bosnia and Herzegovina","ba","Sarajevo","Europe",3280819],
+    ["Brazil","br","Brasília","Americas",212559417],
+    ["Bulgaria","bg","Sofia","Europe",6520314],
+    ["Cambodia","kh","Phnom Penh","Asia",16718965],
+    ["Cameroon","cm","Yaoundé","Africa",27914536],
+    ["Canada","ca","Ottawa","Americas",38005238],
+    ["Chile","cl","Santiago","Americas",19116201],
+    ["China","cn","Beijing","Asia",1439323776],
+    ["Colombia","co","Bogotá","Americas",51209342],
+    ["Croatia","hr","Zagreb","Europe",4047200],
+    ["Cuba","cu","Havana","Americas",11326616],
+    ["Czech Republic","cz","Prague","Europe",10708981],
+    ["Denmark","dk","Copenhagen","Europe",5831413],
+    ["Ecuador","ec","Quito","Americas",18001000],
+    ["Egypt","eg","Cairo","Africa",102334404],
+    ["Ethiopia","et","Addis Ababa","Africa",114963583],
+    ["Finland","fi","Helsinki","Europe",5530719],
+    ["France","fr","Paris","Europe",67391582],
+    ["Georgia","ge","Tbilisi","Asia",3989167],
+    ["Germany","de","Berlin","Europe",83240525],
+    ["Ghana","gh","Accra","Africa",31072940],
+    ["Greece","gr","Athens","Europe",10715549],
+    ["Guatemala","gt","Guatemala City","Americas",17109746],
+    ["Hungary","hu","Budapest","Europe",9749763],
+    ["Iceland","is","Reykjavik","Europe",366425],
+    ["India","in","New Delhi","Asia",1380004385],
+    ["Indonesia","id","Jakarta","Asia",273523615],
+    ["Iran","ir","Tehran","Asia",83992949],
+    ["Iraq","iq","Baghdad","Asia",40222493],
+    ["Ireland","ie","Dublin","Europe",4994724],
+    ["Israel","il","Jerusalem","Asia",9216900],
+    ["Italy","it","Rome","Europe",60461826],
+    ["Jamaica","jm","Kingston","Americas",2961167],
+    ["Japan","jp","Tokyo","Asia",125836021],
+    ["Jordan","jo","Amman","Asia",10203134],
+    ["Kazakhstan","kz","Astana","Asia",18776707],
+    ["Kenya","ke","Nairobi","Africa",53771296],
+    ["Kuwait","kw","Kuwait City","Asia",4270563],
+    ["Laos","la","Vientiane","Asia",7275560],
+    ["Latvia","lv","Riga","Europe",1886198],
+    ["Lebanon","lb","Beirut","Asia",6825445],
+    ["Libya","ly","Tripoli","Africa",6871292],
+    ["Lithuania","lt","Vilnius","Europe",2794090],
+    ["Luxembourg","lu","Luxembourg","Europe",632275],
+    ["Malaysia","my","Kuala Lumpur","Asia",32365999],
+    ["Malta","mt","Valletta","Europe",441543],
+    ["Mexico","mx","Mexico City","Americas",128932753],
+    ["Moldova","md","Chișinău","Europe",2617820],
+    ["Mongolia","mn","Ulaanbaatar","Asia",3278292],
+    ["Morocco","ma","Rabat","Africa",36910560],
+    ["Mozambique","mz","Maputo","Africa",31255435],
+    ["Myanmar","mm","Naypyidaw","Asia",54409800],
+    ["Nepal","np","Kathmandu","Asia",29136808],
+    ["Netherlands","nl","Amsterdam","Europe",17441139],
+    ["New Zealand","nz","Wellington","Oceania",5084300],
+    ["Nicaragua","ni","Managua","Americas",6624554],
+    ["Nigeria","ng","Abuja","Africa",206139589],
+    ["North Korea","kp","Pyongyang","Asia",25778816],
+    ["Norway","no","Oslo","Europe",5379475],
+    ["Oman","om","Muscat","Asia",4520471],
+    ["Pakistan","pk","Islamabad","Asia",220892340],
+    ["Panama","pa","Panama City","Americas",4351267],
+    ["Paraguay","py","Asunción","Americas",7132538],
+    ["Peru","pe","Lima","Americas",32971854],
+    ["Philippines","ph","Manila","Asia",109581078],
+    ["Poland","pl","Warsaw","Europe",37950802],
+    ["Portugal","pt","Lisbon","Europe",10305563],
+    ["Qatar","qa","Doha","Asia",2881053],
+    ["Romania","ro","Bucharest","Europe",19237691],
+    ["Russia","ru","Moscow","Europe",144104080],
+    ["Saudi Arabia","sa","Riyadh","Asia",34813871],
+    ["Senegal","sn","Dakar","Africa",16743927],
+    ["Serbia","rs","Belgrade","Europe",6804596],
+    ["Singapore","sg","Singapore","Asia",5850342],
+    ["Slovakia","sk","Bratislava","Europe",5459642],
+    ["Slovenia","si","Ljubljana","Europe",2078938],
+    ["Somalia","so","Mogadishu","Africa",15893222],
+    ["South Africa","za","Cape Town","Africa",59308690],
+    ["South Korea","kr","Seoul","Asia",51780579],
+    ["Spain","es","Madrid","Europe",47351567],
+    ["Sri Lanka","lk","Sri Jayawardenepura Kotte","Asia",21919000],
+    ["Sudan","sd","Khartoum","Africa",43849260],
+    ["Sweden","se","Stockholm","Europe",10353442],
+    ["Switzerland","ch","Bern","Europe",8654622],
+    ["Syria","sy","Damascus","Asia",17500658],
+    ["Taiwan","tw","Taipei","Asia",23503349],
+    ["Tajikistan","tj","Dushanbe","Asia",9537645],
+    ["Tanzania","tz","Dodoma","Africa",59734218],
+    ["Thailand","th","Bangkok","Asia",69799978],
+    ["Tunisia","tn","Tunis","Africa",11818619],
+    ["Turkey","tr","Ankara","Asia",84339067],
+    ["Uganda","ug","Kampala","Africa",45741007],
+    ["Ukraine","ua","Kyiv","Europe",43733762],
+    ["United Arab Emirates","ae","Abu Dhabi","Asia",9890402],
+    ["United Kingdom","gb","London","Europe",67215293],
+    ["United States","us","Washington D.C.","Americas",329484123],
+    ["Uruguay","uy","Montevideo","Americas",3473730],
+    ["Uzbekistan","uz","Tashkent","Asia",34915100],
+    ["Venezuela","ve","Caracas","Americas",28435943],
+    ["Vietnam","vn","Hanoi","Asia",97338579],
+    ["Yemen","ye","Sana'a","Asia",29825964],
+    ["Zambia","zm","Lusaka","Africa",18383955],
+    ["Zimbabwe","zw","Harare","Africa",14862924]
+  ];
+  return data.map(([name, code, capital, region, population]) => ({
+    name: { common: name },
+    flags: { png: `https://flagcdn.com/w640/${code}.png` },
+    capital: [capital],
+    region,
+    population
+  }));
+}
+
+countries = buildCountries();
+
+// ── Landing ──
+$('start-btn').addEventListener('click', () => {
+  playerName = $('player-name').value.trim() || 'Explorer';
+  show('difficulty');
+});
+$('player-name').addEventListener('keydown', e => {
+  if (e.key === 'Enter') $('start-btn').click();
+});
+
+// ── Difficulty ──
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    difficulty = btn.dataset.diff;
+    startGame();
+  });
+});
+
+// ── Game ──
+function startGame() {
+  score = 0; lives = 3; round = 1; correct = 0; shown = [];
+  updateHUD();
+  show('game');
+  nextRound();
+}
+
+function nextRound() {
+  current = randomFlag();
+  if (!current) return;
+  $('flag-image').src = current.flags?.png || '';
+  $('hint-text').textContent = buildHint(current);
+  $('guess-input').value = '';
+  $('suggestions').style.display = 'none';
+  $('suggestions').innerHTML = '';
+  $('feedback').style.display = 'none';
+  $('round-display').textContent = round;
+}
+
+function randomFlag() {
+  const pool = countries.filter(c => !shown.includes(c));
+  if (!pool.length) { shown = []; return randomFlag(); }
+  const c = pool[Math.floor(Math.random() * pool.length)];
+  shown.push(c);
+  return c;
+}
+
+function buildHint(c) {
+  const cap = c.capital?.[0] || '—';
+  const reg = c.region || '—';
+  if (difficulty === 'easy')   return `Capital: ${cap}`;
+  if (difficulty === 'medium') return `Region: ${reg}`;
+  return `Capital: ${cap} · Region: ${reg}`;
+}
+
+function updateHUD() {
+  $('score-display').textContent = score;
+  [$('d1'), $('d2'), $('d3')].forEach((d, i) => {
+    d.classList.toggle('lost', i >= lives);
+  });
+}
+
+function showFeedback(type, msg) {
+  const el = $('feedback');
+  el.className = `feedback ${type}`;
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function animateScore() {
+  const el = $('score-display');
+  el.classList.remove('score-pop');
+  void el.offsetWidth;
+  el.classList.add('score-pop');
+  setTimeout(() => el.classList.remove('score-pop'), 400);
+}
+
+$('submit-btn').addEventListener('click', checkAnswer);
+$('guess-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+
+async function checkAnswer() {
+  const guess = $('guess-input').value.trim().toLowerCase();
+  if (!guess) return;
+  const answer = current.name.common.toLowerCase();
+
+  $('suggestions').style.display = 'none';
+
+  if (guess === answer) {
+    score += MULT[difficulty];
+    correct++;
+    animateScore();
+    updateHUD();
+    showFeedback('correct', `✓ ${current.name.common} · +${MULT[difficulty]} pts`);
+  } else {
+    lives--;
+    updateHUD();
+    showFeedback('wrong', `✗ It was ${current.name.common}`);
+  }
+
+  if (lives <= 0) {
+    setTimeout(endGame, 1000);
+    return;
+  }
+
+  round++;
+  setTimeout(nextRound, 1200);
+}
+
+$('skip-btn').addEventListener('click', () => {
+  lives--;
+  updateHUD();
+  showFeedback('wrong', `Skipped · It was ${current.name.common}`);
+  if (lives <= 0) { setTimeout(endGame, 1000); return; }
+  round++;
+  setTimeout(nextRound, 1200);
+});
+
+// ── Suggestions ──
+$('guess-input').addEventListener('input', () => {
+  const q = $('guess-input').value.trim().toLowerCase();
+  const box = $('suggestions');
+  if (q.length < 2) { box.style.display = 'none'; return; }
+  const matches = countries
+    .filter(c => c.name.common.toLowerCase().includes(q))
+    .slice(0, 7);
+  if (!matches.length) { box.style.display = 'none'; return; }
+  box.innerHTML = matches.map(c =>
+    `<div class="suggestion">${c.name.common}</div>`
+  ).join('');
+  box.style.display = 'block';
+  box.querySelectorAll('.suggestion').forEach(el => {
+    el.addEventListener('click', () => {
+      $('guess-input').value = el.textContent;
+      box.style.display = 'none';
+    });
+  });
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.input-wrap')) $('suggestions').style.display = 'none';
+});
+
+// ── Game Over ──
+function endGame() {
+  const best = parseInt(localStorage.getItem('flagle-best') || '0');
+  const isNew = score > best;
+  if (isNew) localStorage.setItem('flagle-best', score);
+
+  $('go-score').textContent = score;
+  $('go-correct').textContent = correct;
+  $('go-rounds').textContent = round - 1;
+  $('go-diff').textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+  $('go-best').textContent = isNew ? score : best;
+  $('new-record').style.display = isNew ? 'block' : 'none';
+  show('gameover');
+}
+
+$('restart-btn').addEventListener('click', startGame);
+$('change-diff-btn').addEventListener('click', () => show('difficulty'));
+$('home-btn').addEventListener('click', () => show('landing'));
+
+
+</script>
+</body>
+</html>

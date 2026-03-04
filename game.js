@@ -1,15 +1,10 @@
-// ═══════════════════════════════════════════════════════════
-// fLAGLE — GAME.JS v2
-// features: Web Audio, Flag Similarity, Personal Stats, Paint Mini-Game
-// ═══════════════════════════════════════════════════════════
+
+// fLAGLE
 
 const $ = id => document.getElementById(id);
 const showEl = (id, val='block') => $(id) && ($(id).style.display = val);
 const hideEl = id => $(id) && ($(id).style.display = 'none');
 
-// ═══════════════════════════════════════════════
-// wEB AUDIO ENGINE
-// ═══════════════════════════════════════════════
 let audioCtx = null;
 function getAudio() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -82,9 +77,7 @@ const SFX = {
   }
 };
 
-// ═══════════════════════════════════════════════
-// fLAG SIMILARITY LOOKUP
-// ═══════════════════════════════════════════════
+
 const SIMILAR_FLAGS = {
   'Chad':             ['Romania (nearly identical, Chad is slightly wider)'],
   'Romania':          ['Chad (nearly identical flags)'],
@@ -137,9 +130,7 @@ function getSimilarityWarning(countryName) {
   return `⚠️ Often confused with: ${similar.join(' · ')}`;
 }
 
-// ═══════════════════════════════════════════════
-// pERSONAL STATS (localStorage)
-// ═══════════════════════════════════════════════
+
 const STATS_KEY = 'flagle-stats-v2';
 
 function loadStats() {
@@ -257,9 +248,7 @@ function renderStats() {
   }
 }
 
-// ═══════════════════════════════════════════════
-// cONFETTI
-// ═══════════════════════════════════════════════
+
 const canvas = $('confetti-canvas'), ctx2d = canvas.getContext('2d');
 let particles = [];
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -287,9 +276,6 @@ function spawnConfetti(count=60) {
   requestAnimationFrame(loop);
 })();
 
-// ═══════════════════════════════════════════════
-// sCREENS
-// ═══════════════════════════════════════════════
 const SCREENS = ['landing','difficulty','region','stats','game','gameover','paint'];
 function showScreen(name) {
   SCREENS.forEach(s=>{ const el=$(`screen-${s}`); if(el) el.classList.remove('active'); });
@@ -298,9 +284,7 @@ function showScreen(name) {
   if (name !== 'landing') SFX.navigate();
 }
 
-// ═══════════════════════════════════════════════
-// sTATE
-// ═══════════════════════════════════════════════
+
 let state = {
   mode:'classic', difficulty:'easy', region:'all', playerName:'Explorer',
   score:0, lives:3, round:1, correct:0, streak:0, maxStreak:0,
@@ -319,9 +303,7 @@ function getStoredBest() {
   return loadStats().bestScore;
 }
 
-// ═══════════════════════════════════════════════
-// nAVIGATION EVENTS
-// ═══════════════════════════════════════════════
+
 $('home-btn').style.display = 'none';
 $('home-btn').addEventListener('click', () => { clearTimer(); showScreen('landing'); renderStats(); });
 
@@ -456,9 +438,6 @@ $('restart-btn').addEventListener('click', startGame);
 $('change-mode-btn').addEventListener('click', () => showScreen('landing'));
 $('share-btn').addEventListener('click', shareResult);
 
-// ═══════════════════════════════════════════════
-// kEYBOARD
-// ═══════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   if (e.key==='Escape') { clearTimer(); showScreen('landing'); renderStats(); return; }
   if (!$('screen-game').classList.contains('active')) return;

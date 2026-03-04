@@ -1,7 +1,7 @@
-// ═══════════════════════════════════════════════
+
 // FLAGLE — FULL COUNTRY DATA (~195 countries)
 // [name, code, capital, region, population]
-// ═══════════════════════════════════════════════
+
 
 const RAW_COUNTRIES = [
   ["Afghanistan","af","Kabul","Asia",41128771],

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flagle — World Flag Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="noise"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- custom cursor dot -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<button id="home-btn" aria-label="Go Home">⌂ HOME</button>
+<a id="github-btn" href="https://github.com/ShiiiivanshSingh/Flag-Guess-" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+  GitHub
+</a>
+
+<!-- ═══════ LANDING ═══════ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-bg">
+    <div class="globe-ring r1"></div>
+    <div class="globe-ring r2"></div>
+    <div class="globe-ring r3"></div>
+  </div>
+  <div class="landing-inner">
+    <div class="logo-lockup">
+      <div class="logo-eyebrow">// WORLD FLAG CHALLENGE</div>
+      <h1 class="logo">FLAG<span>LE</span></h1>
+      <div class="logo-sub" id="logo-sub">Test your vexillology</div>
+    </div>
+    <div class="name-row">
+      <!-- greeting shown when name is saved -->
+      <div class="name-greeting" id="name-greeting" style="display:none">
+        <span class="greeting-text" id="greeting-text"></span>
+        <button class="greeting-edit" id="greeting-edit">not you?</button>
+      </div>
+      <!-- input shown when no saved name -->
+      <div class="name-input-wrap" id="name-input-wrap">
+        <input type="text" id="player-name" placeholder="Your name" maxlength="24" aria-label="Player name" autocomplete="off" />
+        <button class="name-tick" id="name-tick-btn" aria-label="Confirm name" style="display:none">✓</button>
+      </div>
+    </div>
+    <div class="stats-pill" id="stats-pill" style="display:none">
+      <span id="pill-flags">0 flags seen</span>
+      <span class="pill-dot"></span>
+      <span id="pill-acc">0% accuracy</span>
+      <span class="pill-dot"></span>
+      <button class="pill-link" id="view-stats-btn">Stats →</button>
+    </div>
+    <nav class="mode-grid">
+      <button class="mode-card" data-mode="classic"><div class="mode-card-bg"></div><span class="mode-icon">🏳️</span><span class="mode-title">Classic</span><span class="mode-desc">Type the country · 3 lives</span><span class="mode-tag">ORIGINAL</span></button>
+      <button class="mode-card" data-mode="multichoice"><div class="mode-card-bg"></div><span class="mode-icon">🔢</span><span class="mode-title">Multi-Choice</span><span class="mode-desc">Pick from 4 options</span><span class="mode-tag">CASUAL</span></button>
+      <button class="mode-card" data-mode="timeattack"><div class="mode-card-bg"></div><span class="mode-icon">⚡</span><span class="mode-title">Time Attack</span><span class="mode-desc">Race the clock · speed bonus</span><span class="mode-tag mode-tag--fire">FAST</span></button>
+      <button class="mode-card" data-mode="streak"><div class="mode-card-bg"></div><span class="mode-icon">🔥</span><span class="mode-title">Streak</span><span class="mode-desc">Chain answers for ×3 bonus</span><span class="mode-tag mode-tag--fire">HOT</span></button>
+      <button class="mode-card" data-mode="reverse"><div class="mode-card-bg"></div><span class="mode-icon">↩️</span><span class="mode-title">Reverse</span><span class="mode-desc">Name shown · pick the flag</span><span class="mode-tag mode-tag--blue">TRICKY</span></button>
+      <button class="mode-card" data-mode="daily"><div class="mode-card-bg"></div><span class="mode-icon">📅</span><span class="mode-title">Daily</span><span class="mode-desc">10 flags · same for everyone</span><span class="mode-tag mode-tag--blue">DAILY</span></button>
+    </nav>
+    <div class="landing-footer">
+      <button class="btn-ghost sm" id="region-btn">🌍 Region Filter</button>
+      <button class="btn-ghost sm" id="stats-page-btn">📊 My Stats</button>
+      <button class="btn-ghost sm" id="paint-mode-btn">🎨 Paint It</button>
+    </div>
+    <p class="kbd-hint"><kbd>Tab</kbd> navigate · <kbd>Enter</kbd> select · <kbd>Esc</kbd> home</p>
+  </div>
+</div>
+
+<!-- ═══════ DIFFICULTY ═══════ -->
+<div id="screen-difficulty" class="screen">
+  <div class="section-header">
+    <h2 class="section-title">Difficulty</h2>
+    <p class="section-sub" id="diff-mode-label">Classic Mode</p>
+  </div>
+  <div class="diff-grid">
+    <button class="diff-btn easy" data-diff="easy"><div class="diff-info"><span class="diff-name">Easy</span><span class="diff-desc">Capital hint · 1× points</span></div><span class="diff-badge green">1×</span></button>
+    <button class="diff-btn medium" data-diff="medium"><div class="diff-info"><span class="diff-name">Medium</span><span class="diff-desc">Region hint · 2× points</span></div><span class="diff-badge yellow">2×</span></button>
+    <button class="diff-btn hard" data-diff="hard"><div class="diff-info"><span class="diff-name">Hard</span><span class="diff-desc">No hints · 3× points</span></div><span class="diff-badge red">3×</span></button>
+  </div>
+  <button class="btn-ghost" id="back-from-diff">← Back</button>
+</div>
+
+<!-- ═══════ REGION ═══════ -->
+<div id="screen-region" class="screen">
+  <div class="section-header">
+    <h2 class="section-title">Region</h2>
+    <p class="section-sub">Which flags to include</p>
+  </div>
+  <div class="region-grid">
+    <button class="region-btn active" data-region="all">🌐 All</button>
+    <button class="region-btn" data-region="Europe">🇪🇺 Europe</button>
+    <button class="region-btn" data-region="Asia">🌏 Asia</button>
+    <button class="region-btn" data-region="Africa">🌍 Africa</button>
+    <button class="region-btn" data-region="Americas">🌎 Americas</button>
+    <button class="region-btn" data-region="Oceania">🏝️ Oceania</button>
+  </div>
+  <button class="btn-primary" id="region-confirm-btn">Apply Filter</button>
+  <button class="btn-ghost" id="back-from-region">← Back</button>
+</div>
+
+<!-- ═══════ STATS ═══════ -->
+<div id="screen-stats" class="screen">
+  <div class="section-header">
+    <h2 class="section-title">My Stats</h2>
+    <p class="section-sub">Stored locally in your browser</p>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card accent"><div class="stat-val" id="st-seen">0</div><div class="stat-key">Flags Seen</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-correct">0</div><div class="stat-key">Correct</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-acc">0%</div><div class="stat-key">Accuracy</div></div>
+    <div class="stat-card"><div class="stat-val" id="st-streak">0</div><div class="stat-key">Best Streak</div></div>
+  </div>
+  <div class="region-acc-wrap">
+    <p class="stats-section-label">Accuracy by Region</p>
+    <div id="region-bars"></div>
+  </div>
+  <div class="nemesis-wrap" id="nemesis-wrap" style="display:none">
+    <p class="stats-section-label">😈 Your Nemesis Flag</p>
+    <div class="nemesis-card" id="nemesis-card"></div>
+  </div>
+  <div class="recent-wrong-wrap" id="recent-wrong-wrap" style="display:none">
+    <p class="stats-section-label">Recent Misses</p>
+    <div class="wrong-flags" id="wrong-flags"></div>
+  </div>
+  <div class="stats-actions">
+    <button class="btn-ghost danger-btn" id="reset-stats-btn">🗑 Reset Stats</button>
+    <button class="btn-ghost" id="back-from-stats">← Back</button>
+  </div>
+</div>
+
+<!-- ═══════ GAME ═══════ -->
+<div id="screen-game" class="screen">
+  <div class="hud" role="status">
+    <div class="hud-cell">
+      <span class="hud-label">Score</span>
+      <span class="hud-value accent" id="score-display">0</span>
+    </div>
+    <div class="hud-cell center">
+      <span class="hud-label" id="lives-label">Lives</span>
+      <div class="lives-row">
+        <span class="life-dot" id="l1"></span>
+        <span class="life-dot" id="l2"></span>
+        <span class="life-dot" id="l3"></span>
+      </div>
+    </div>
+    <div class="hud-cell right">
+      <span class="hud-label" id="right-hud-label">Round</span>
+      <span class="hud-value" id="round-display">1</span>
+    </div>
+  </div>
+
+  <div class="streak-bar" id="streak-bar"></div>
+
+  <div class="timer-wrap" id="timer-wrap" style="display:none">
+    <div class="timer-inner" id="timer-bar"></div>
+  </div>
+
+  <div class="flag-wrap" id="flag-wrap">
+    <img id="flag-image" src="" alt="Guess this flag" draggable="false" />
+    <div class="flag-shimmer" id="flag-shimmer"></div>
+  </div>
+
+  <p class="hint-bar" id="hint-text"></p>
+  <div class="similarity-warn" id="similarity-warn" style="display:none"></div>
+
+  <div id="classic-input" class="input-section">
+    <div class="input-wrap">
+      <input type="text" id="guess-input" placeholder="Country name…" autocomplete="off" aria-label="Country name" />
+      <div id="suggestions" role="listbox"></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-primary" id="submit-btn">Guess</button>
+      <button class="btn-skip" id="skip-btn">SKIP −1♥</button>
+    </div>
+  </div>
+
+  <div id="mc-options" class="mc-grid" style="display:none"></div>
+  <div id="reverse-options" class="reverse-grid" style="display:none"></div>
+
+  <div class="feedback" id="feedback"></div>
+  <p class="kbd-hint in-game"><span id="kbd-game-hint">Type · <kbd>Enter</kbd> guess · <kbd>↑↓</kbd> suggest · <kbd>S</kbd> skip</span></p>
+</div>
+
+<!-- ═══════ GAME OVER ═══════ -->
+<div id="screen-gameover" class="screen">
+  <div class="go-inner">
+    <p class="go-eyebrow" id="go-eyebrow">Game Over</p>
+    <div class="go-score-wrap">
+      <div class="go-score" id="go-score">0</div>
+      <div class="go-label">FINAL SCORE</div>
+    </div>
+    <div class="new-record" id="new-record">🏆 New Personal Best!</div>
+    <div class="go-meta">
+      <div class="go-stat"><div class="go-stat-val" id="go-correct">—</div><div class="go-stat-key">Correct</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-rounds">—</div><div class="go-stat-key">Rounds</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-diff">—</div><div class="go-stat-key">Difficulty</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-best">—</div><div class="go-stat-key">Best Ever</div></div>
+    </div>
+    <div class="go-streak" id="go-streak"></div>
+
+    <!-- FLAG PAINT MINI-GAME -->
+    <div class="minigame-wrap" id="minigame-wrap">
+      <div class="minigame-header">
+        <span class="minigame-label">🎨 Paint the Flag</span>
+        <span class="minigame-sub" id="paint-country-name">Recreate the last flag</span>
+      </div>
+      <div class="paint-layout">
+        <div class="paint-side">
+          <p class="paint-side-label">Reference</p>
+          <img id="paint-reference" src="" alt="Reference flag" class="paint-ref-img" />
+        </div>
+        <div class="paint-side">
+          <p class="paint-side-label">Your version</p>
+          <canvas id="paint-canvas" width="270" height="180"></canvas>
+        </div>
+      </div>
+      <div class="palette" id="palette"></div>
+      <div class="paint-tools">
+        <button class="tool-btn active" id="tool-brush" title="Brush (B)">✏️</button>
+        <button class="tool-btn" id="tool-fill" title="Fill bucket (F)">🪣</button>
+        <button class="tool-btn" id="tool-eraser" title="Eraser (E)">🧹</button>
+        <label class="brush-size-wrap" title="Brush size">
+          <input type="range" id="brush-size" min="3" max="35" value="14" />
+        </label>
+        <button class="tool-btn" id="paint-clear" title="Clear canvas">🗑️</button>
+      </div>
+    </div>
+
+    <div class="go-actions">
+      <button class="btn-primary" id="restart-btn">▶ Play Again</button>
+      <button class="btn-ghost" id="share-btn">📤 Share Result</button>
+      <button class="btn-ghost" id="change-mode-btn">↩ Change Mode</button>
+    </div>
+    <div class="share-toast" id="share-toast">📋 Copied to clipboard!</div>
+  </div>
+</div>
+
+<!-- ═══════ STANDALONE PAINT SCREEN ═══════ -->
+<div id="screen-paint" class="screen">
+  <div class="paint-standalone-inner">
+    <div class="paint-standalone-header">
+      <h2 class="paint-standalone-title" id="paint-standalone-flag-name">Paint the Flag</h2>
+      <p class="paint-standalone-sub">Draw it as best you can · use the fill bucket for large areas</p>
+    </div>
+    <div class="paint-layout full">
+      <div class="paint-side">
+        <p class="paint-side-label">Reference</p>
+        <img id="paint-standalone-reference" src="" alt="Reference flag" class="paint-ref-img" />
+      </div>
+      <div class="paint-side">
+        <p class="paint-side-label">Your Canvas</p>
+        <canvas id="paint-standalone-canvas" width="360" height="240"></canvas>
+      </div>
+    </div>
+    <div class="palette" id="paint-standalone-palette"></div>
+    <div class="paint-tools">
+      <button class="tool-btn active" id="tool-brush-s" title="Brush">✏️</button>
+      <button class="tool-btn" id="tool-fill-s" title="Fill bucket">🪣</button>
+      <button class="tool-btn" id="tool-eraser-s" title="Eraser">🧹</button>
+      <label class="brush-size-wrap"><input type="range" id="brush-size-s" min="3" max="40" value="14" /></label>
+      <button class="tool-btn" id="paint-standalone-clear" title="Clear">🗑️</button>
+    </div>
+    <div class="paint-standalone-actions">
+      <button class="btn-primary" id="paint-standalone-new">🎲 New Flag</button>
+      <button class="btn-ghost" id="paint-standalone-back">← Back to Menu</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

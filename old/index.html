@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flagle — World Flag Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- NOISE OVERLAY -->
+<div class="noise"></div>
+
+<!-- CONFETTI CANVAS -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HOME BUTTON -->
+<!-- <button id="home-btn" tabindex="1" aria-label="Go Home">⌂ HOME</button> -->
+
+<!-- GITHUB LINK -->
+<a id="github-btn" href="https://github.com/ShiiiivanshSingh/Flag-Guess-" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+  GitHub
+</a>
+
+<!-- ═══════════════════ SCREEN: LANDING ═══════════════════ -->
+<div id="screen-landing" class="screen active" role="main">
+  <div class="landing-inner">
+    <div class="logo-wrap">
+      <h1 class="logo">FLAG<span>LE</span></h1>
+      <p class="tagline">// world flag challenge</p>
+    </div>
+
+    <div class="name-row">
+      <input type="text" id="player-name" placeholder="Enter your name" maxlength="24"
+             aria-label="Player name" tabindex="2" />
+    </div>
+
+    <nav class="mode-grid" aria-label="Game modes" role="navigation">
+      <button class="mode-card" data-mode="classic" tabindex="3">
+        <span class="mode-icon">🏳️</span>
+        <span class="mode-title">Classic</span>
+        <span class="mode-desc">Type the country · 3 lives</span>
+        <span class="mode-tag">ORIGINAL</span>
+      </button>
+      <button class="mode-card" data-mode="multichoice" tabindex="4">
+        <span class="mode-icon">🔢</span>
+        <span class="mode-title">Multi-Choice</span>
+        <span class="mode-desc">Pick from 4 options</span>
+        <span class="mode-tag">CASUAL</span>
+      </button>
+      <button class="mode-card" data-mode="timeattack" tabindex="5">
+        <span class="mode-icon">⚡</span>
+        <span class="mode-title">Time Attack</span>
+        <span class="mode-desc">30s per flag · Speed bonus</span>
+        <span class="mode-tag">FAST</span>
+      </button>
+      <button class="mode-card" data-mode="streak" tabindex="6">
+        <span class="mode-icon">🔥</span>
+        <span class="mode-title">Streak Mode</span>
+        <span class="mode-desc">Chain answers for ×3 bonus</span>
+        <span class="mode-tag">HOT</span>
+      </button>
+      <button class="mode-card" data-mode="reverse" tabindex="7">
+        <span class="mode-icon">↩️</span>
+        <span class="mode-title">Reverse</span>
+        <span class="mode-desc">Name shown · Pick the flag</span>
+        <span class="mode-tag">TRICKY</span>
+      </button>
+      <button class="mode-card" data-mode="daily" tabindex="8">
+        <span class="mode-icon">📅</span>
+        <span class="mode-title">Daily Challenge</span>
+        <span class="mode-desc">Same flags · Everyone · Today</span>
+        <span class="mode-tag">DAILY</span>
+      </button>
+    </nav>
+
+    <div class="landing-footer">
+      <button class="btn-ghost" id="region-btn" tabindex="9">🌍 Region Filter</button>
+    </div>
+
+    <!-- KEYBOARD HINT -->
+    <p class="kbd-hint">Use <kbd>Tab</kbd> / <kbd>Enter</kbd> to navigate · <kbd>Esc</kbd> to go home</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCREEN: DIFFICULTY ═══════════════════ -->
+<div id="screen-difficulty" class="screen" role="main">
+  <div class="section-header">
+    <h2 class="section-title">Difficulty</h2>
+    <p class="section-sub" id="diff-mode-label">Classic Mode</p>
+  </div>
+  <div class="diff-grid">
+    <button class="diff-btn easy" data-diff="easy" tabindex="2">
+      <div class="diff-info">
+        <span class="diff-name">Easy</span>
+        <span class="diff-desc">Capital hint · 1× points · More time</span>
+      </div>
+      <span class="diff-badge green">1×</span>
+    </button>
+    <button class="diff-btn medium" data-diff="medium" tabindex="3">
+      <div class="diff-info">
+        <span class="diff-name">Medium</span>
+        <span class="diff-desc">Region hint · 2× points</span>
+      </div>
+      <span class="diff-badge yellow">2×</span>
+    </button>
+    <button class="diff-btn hard" data-diff="hard" tabindex="4">
+      <div class="diff-info">
+        <span class="diff-name">Hard</span>
+        <span class="diff-desc">No hints · 3× points · Less time</span>
+      </div>
+      <span class="diff-badge red">3×</span>
+    </button>
+  </div>
+  <button class="btn-ghost" id="back-from-diff" tabindex="5">← Back</button>
+</div>
+
+<!-- ═══════════════════ SCREEN: REGION FILTER ═══════════════════ -->
+<div id="screen-region" class="screen" role="main">
+  <div class="section-header">
+    <h2 class="section-title">Region Filter</h2>
+    <p class="section-sub">Choose which regions to include</p>
+  </div>
+  <div class="region-grid" role="group" aria-label="Region selection">
+    <button class="region-btn active" data-region="all" tabindex="2">🌐 All Regions</button>
+    <button class="region-btn" data-region="Europe" tabindex="3">🇪🇺 Europe</button>
+    <button class="region-btn" data-region="Asia" tabindex="4">🌏 Asia</button>
+    <button class="region-btn" data-region="Africa" tabindex="5">🌍 Africa</button>
+    <button class="region-btn" data-region="Americas" tabindex="6">🌎 Americas</button>
+    <button class="region-btn" data-region="Oceania" tabindex="7">🏝️ Oceania</button>
+  </div>
+  <button class="btn-primary" id="region-confirm-btn" tabindex="8">Apply Filter</button>
+  <button class="btn-ghost" id="back-from-region" tabindex="9">← Back</button>
+</div>
+
+<!-- ═══════════════════ SCREEN: GAME ═══════════════════ -->
+<div id="screen-game" class="screen" role="main">
+
+  <!-- HUD -->
+  <div class="hud" role="status" aria-live="polite">
+    <div class="hud-cell">
+      <span class="hud-label">Score</span>
+      <span class="hud-value accent" id="score-display">0</span>
+    </div>
+    <div class="hud-cell center">
+      <span class="hud-label" id="lives-label">Lives</span>
+      <div class="lives-row" id="lives-row" aria-label="Lives remaining">
+        <span class="life-dot" id="l1"></span>
+        <span class="life-dot" id="l2"></span>
+        <span class="life-dot" id="l3"></span>
+      </div>
+    </div>
+    <div class="hud-cell right">
+      <span class="hud-label" id="right-hud-label">Round</span>
+      <span class="hud-value" id="round-display">1</span>
+    </div>
+  </div>
+
+  <!-- STREAK BAR -->
+  <div class="streak-bar" id="streak-bar" aria-live="polite" aria-label="Streak info"></div>
+
+  <!-- TIMER BAR (time attack) -->
+  <div class="timer-wrap" id="timer-wrap" style="display:none">
+    <div class="timer-inner" id="timer-bar"></div>
+    <span class="timer-text" id="timer-text">30</span>
+  </div>
+
+  <!-- FLAG -->
+  <div class="flag-wrap" id="flag-wrap">
+    <div class="flag-blur-overlay" id="flag-blur"></div>
+    <img id="flag-image" src="" alt="Guess this flag" draggable="false" />
+    <div class="flag-slide-out" id="flag-slide"></div>
+  </div>
+
+  <!-- HINT -->
+  <p class="hint-bar" id="hint-text" aria-live="polite"></p>
+
+  <!-- CLASSIC / STREAK INPUT -->
+  <div id="classic-input" class="input-section">
+    <div class="input-wrap">
+      <input type="text" id="guess-input" placeholder="Country name…" autocomplete="off"
+             aria-label="Country name guess" aria-autocomplete="list" aria-controls="suggestions" tabindex="2"/>
+      <div id="suggestions" role="listbox" aria-label="Country suggestions"></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-primary" id="submit-btn" tabindex="3">Guess</button>
+      <button class="btn-skip" id="skip-btn" tabindex="4">SKIP −1♥</button>
+    </div>
+  </div>
+
+  <!-- MULTI-CHOICE OPTIONS -->
+  <div id="mc-options" class="mc-grid" style="display:none" role="group" aria-label="Answer choices"></div>
+
+  <!-- REVERSE FLAG OPTIONS -->
+  <div id="reverse-options" class="reverse-grid" style="display:none" role="group" aria-label="Flag choices"></div>
+
+  <!-- FEEDBACK -->
+  <div class="feedback" id="feedback" aria-live="assertive"></div>
+
+  <!-- KEYBOARD HINT -->
+  <p class="kbd-hint in-game">
+    <span id="kbd-game-hint">Type to search · <kbd>Enter</kbd> to guess · <kbd>S</kbd> to skip</span>
+  </p>
+</div>
+
+<!-- ═══════════════════ SCREEN: GAME OVER ═══════════════════ -->
+<div id="screen-gameover" class="screen" role="main">
+  <div class="go-inner">
+    <p class="go-eyebrow" id="go-eyebrow">Game Over</p>
+    <div class="go-score-wrap">
+      <div class="go-score" id="go-score">0</div>
+      <div class="go-label">FINAL SCORE</div>
+    </div>
+    <div class="new-record" id="new-record" aria-live="polite">🏆 New Personal Best!</div>
+    <div class="go-meta">
+      <div class="go-stat"><div class="go-stat-val" id="go-correct">—</div><div class="go-stat-key">Correct</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-rounds">—</div><div class="go-stat-key">Rounds</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-diff">—</div><div class="go-stat-key">Difficulty</div></div>
+      <div class="go-stat"><div class="go-stat-val" id="go-best">—</div><div class="go-stat-key">Best Ever</div></div>
+    </div>
+    <div class="go-streak" id="go-streak"></div>
+    <div class="go-actions">
+      <button class="btn-primary" id="restart-btn" tabindex="2">▶ Play Again</button>
+      <button class="btn-ghost" id="share-btn" tabindex="3">📤 Share Result</button>
+      <button class="btn-ghost" id="change-mode-btn" tabindex="4">↩ Change Mode</button>
+    </div>
+    <div class="share-toast" id="share-toast">📋 Copied to clipboard!</div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

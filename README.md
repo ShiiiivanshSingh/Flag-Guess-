@@ -17,7 +17,8 @@ Welcome to Flag Guessing Adventure! A modern geography game that challenges play
 ## 🌟 Screenshots
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/79bf9491-a31e-48a3-b45e-cb1cff4a976f" alt="Game Screenshot">
+ <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bfc68a83-50be-41cb-9a1e-c0d91788dbb8" />
+
 </div>
 
 <div align="center">
